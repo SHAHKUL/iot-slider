@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>IoT Dashboard</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #0f172a;
+      color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .card {
+      background: #020617;
+      padding: 25px;
+      border-radius: 12px;
+      width: 300px;
+      text-align: center;
+      box-shadow: 0 0 15px rgba(0,0,0,0.6);
+    }
+
+    h2 {
+      margin-bottom: 10px;
+    }
+
+    .status {
+      margin: 15px 0;
+      font-weight: bold;
+    }
+
+    .online {
+      color: #22c55e;
+    }
+
+    .offline {
+      color: #ef4444;
+    }
+
+    button {
+      padding: 10px 20px;
+      margin: 8px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    .on {
+      background: #22c55e;
+      color: #000;
+    }
+
+    .off {
+      background: #ef4444;
+      color: #fff;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="card">
+    <h2>IoT Dashboard</h2>
+
+    <div id="status" class="status offline">
+      ● Device OFFLINE
+    </div>
+
+    <button class="on" onclick="turnOn()">Turn ON</button>
+    <button class="off" onclick="turnOff()">Turn OFF</button>
+  </div>
+
+  <script>
+    const TOKEN = "q7k9HpqFaqNXRbiWYj7kz1F5NZui0Vnu";
+    const BASE_URL = "https://blynk.cloud/external/api";
+
+    function setStatus(online) {
+      const status = document.getElementById("status");
+      if (online) {
+        status.textContent = "● Device ONLINE";
+        status.className = "status online";
+      } else {
+        status.textContent = "● Device OFFLINE";
+        status.className = "status offline";
+      }
+    }
+
+    function turnOn() {
+      fetch(`${BASE_URL}/update?token=${TOKEN}&v1=1`)
+        .then(() => setStatus(true))
+        .catch(() => setStatus(false));
+    }
+
+    function turnOff() {
+      fetch(`${BASE_URL}/update?token=${TOKEN}&v1=0`)
+        .then(() => setStatus(true))
+        .catch(() => setStatus(false));
+    }
+  </script>
+
+</body>
+</html>
