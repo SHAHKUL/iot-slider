@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Blynk Slider Control</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #0f172a;
+      color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .card {
+      background: #020617;
+      padding: 25px;
+      border-radius: 12px;
+      width: 320px;
+      text-align: center;
+      box-shadow: 0 0 20px rgba(0,0,0,0.6);
+    }
+
+    h2 {
+      margin-bottom: 20px;
+    }
+
+    input[type="range"] {
+      width: 100%;
+      margin: 15px 0;
+    }
+
+    .value {
+      font-size: 22px;
+      font-weight: bold;
+      color: #22c55e;
+    }
+
+    .status {
+      margin-top: 10px;
+      font-size: 14px;
+      color: #94a3b8;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="card">
+    <h2>Slider Control</h2>
+
+    <div class="value">
+      Value: <span id="sliderValue">40</span>
+    </div>
+
+    <input
+      type="range"
+      min="0"
+      max="100"
+      value="40"
+      oninput="updateSlider(this.value)"
+    />
+
+    <div id="status" class="status">
+      Waiting for input...
+    </div>
+  </div>
+
+  <script>
+    const TOKEN = "cNke1J4KycV8uaF5w6SYDDzr4zt7WCxh";
+    const BASE_URL = "https://blynk.cloud/external/api";
+
+    function updateSlider(value) {
+      // Update UI instantly
+      document.getElementById("sliderValue").textContent = value;
+      document.getElementById("status").textContent = "Sending value to Blynk...";
+
+      // Send value to Blynk (V2)
+      fetch(`${BASE_URL}/update?token=${TOKEN}&V2=${value}`)
+        .then(() => {
+          document.getElementById("status").textContent =
+            "Value sent to Blynk ✔";
+        })
+        .catch(() => {
+          document.getElementById("status").textContent =
+            "Failed to send value ❌";
+        });
+    }
+  </script>
+
+</body>
+</html>
